@@ -2,9 +2,9 @@
   "name": "classapp-dev-challenge",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && npm run-script start",
+    "client": "cd client && npm run start",
     "server": "node server.js",
-    "start": "concurrently --kill-others-on-fail \"npm run-script server\" \"npm run-script client\""
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
     "express": "^4.16.3"
