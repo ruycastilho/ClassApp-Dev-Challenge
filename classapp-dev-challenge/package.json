@@ -2,7 +2,7 @@
   "name": "classapp-dev-challenge",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && npm start",
+    "client": "cd client && npm run-script start",
     "server": "node server.js",
     "start": "concurrently --kill-others-on-fail \"npm run-script server\" \"npm run-script client\""
   },
