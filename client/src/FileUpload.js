@@ -62,7 +62,7 @@ class FileUpload extends Component {
    render() {
      return(
         <FileDiv>
-            <Form onSubmit={this.handleUpload} >
+            <Form onSubmit={alert("!")} >
                 <Input type="file" name="csv" ref={(ref) => { this.uploadInput = ref; }}></Input>
                 <Input type="submit" name="submit" value="Upload .CSV File"></Input>
             </Form>
