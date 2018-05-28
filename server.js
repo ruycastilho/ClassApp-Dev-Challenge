@@ -40,11 +40,15 @@ var upload = multer({ storage: storage });
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// app.post('/upload', upload.single('file'), (req, res) => {
+app.post('/upload', upload.single('file'), (req, res) => {
 
-//   parseCSVcallback(res.download('./files/output.json'));
+  parseCSVcallback(res.download('./files/output.json'));
 
-// })
+})
+
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// });
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
