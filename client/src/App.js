@@ -4,6 +4,7 @@ import reactlogo from './logo.svg';
 import linkedin from './linkedin.png';
 import github from './github.png';
 import nodejs from './nodejslogo.png';
+import FileUpload from './FileUpload';
 
 // Modules Used:
 
@@ -98,19 +99,7 @@ const LogoDiv = styled.div`
     float:right;
 `;
 
-const FileDiv = styled.div`
-    background-color: transparent;
-    padding:0;
-    height:100%;
-    overflow:hidden;
-    width: 100%;
-    display: flex;
-    flex-flow: column;
-    justify-content: center;
-    margin:auto;
-    position: absolute;
-    bottom: 0;
-`;
+
 
 const Logo = styled.img`
     height: 55%;
@@ -172,7 +161,7 @@ const FunctionText = styled.p`
     padding-top: 4%;
     margin: auto;
     width: 100%;
-  `;
+`;
 
 const FunctionLeftText = FunctionText.extend`
     float: left;
@@ -209,44 +198,13 @@ const DescriptionRightText = DescriptionText.extend`
 
 `;
 
-const Input = styled.input`
-  padding: 0.5em;
-  margin: 0.5em;
-  color: #235BD6;
-  background: transparent;
-  border: solid 1px;
-`;
-
-// const SubmitInput = DescriptionText.extend`
-//     float: right;
-//     text-align: right;
-
-// `;
-
-const Form = styled.form`
-    margin: 0 auto;
-`;
-
-
 class App extends Component {
-  state = {
-    response: ''
-  };
 
   componentDidMount() {
     this.callApi()
       .then(res => this.setState({ response: res.express }))
       .catch(err => console.log(err));
   }
-
-  callApi = async () => {
-    const response = await fetch('/api/parser');
-    const body = await response.json();
-
-    if (response.status !== 200) throw Error(body.message);
-
-    return body;
-  };
 
   render() {
     return (
@@ -274,12 +232,7 @@ class App extends Component {
             <DescriptionRightText>An output.json file, that contains the parsed and organized content from input.csv. <br/>The JSON order is not important, but content is.</DescriptionRightText>         
  
           </OutputDiv>
-          <FileDiv>
-            <Form enctype="multipart/form-data" method="POST" >
-                <Input type="file" name="csv"></Input>
-                <Input type="submit" name="submit" value="Upload .CSV File"></Input>
-              </Form>
-          </FileDiv>
+          <FileUpload />
         </MainDiv>
 
         <FooterDiv>

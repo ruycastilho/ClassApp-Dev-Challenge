@@ -21,28 +21,32 @@ const path = require('path');
 const app = express();
 const port = process.env.PORT || 5000;
 
+function parseCSVcallback(callback) {
+  Parser.parseCSV();
+  callback();
+
+}
 app.use(bodyParser.urlencoded({extended:false})); 
 app.use(bodyParser.json()); 
 
 const storage = multer.diskStorage({
   destination: './files',
   filename(req, file, cb) {
-    cb(null, `${new Date()}-${file.originalname}`);
+    cb(null, `input.csv`);
   },
 });
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-app.get('/api/parser', (req, res) => {
-  Parser.parseCSV();
-  res.send("HEY");
+app.post('/upload', multer.single('file'), (req, res) => {
 
+  parseCSVcallback(res.download('./files/output.json'));
 
-});
+})
 
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// });
 
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
