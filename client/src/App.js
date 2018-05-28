@@ -236,7 +236,6 @@ class App extends Component {
           <Link href="https://www.linkedin.com/in/ruycastilho"><LogoLinkRight alt="linkedinlogo" src={linkedin}/></Link>          
 
         </FooterDiv>
-        {/* <p className="App-intro">{this.state.response}</p> */}
       </PageDiv>
     );
   }
