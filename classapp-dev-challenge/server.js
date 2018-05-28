@@ -3,6 +3,8 @@
 // Challenge: https://gist.github.com/lucas-brito/84a77f08115ae4b9b034c010ff2a2ab4
 // Author: Ruy Castilho Barrichelo, github.com/ruycastilho
 
+// Modules Used:
+
 // Parser: Available at 'parser.js'
 var Parser = require('./parser.js');
 // Filestream : Working with file I/O
@@ -13,13 +15,11 @@ const express = require('express');
 const multer = require('multer');
 // Body-Parser : Cleans req.body
 const bodyParser = require('body-parser');
-// Axios : API calls
-const axios = require('axios');
 
 const path = require('path');
 
 const app = express();
-const port = process.env.PORT || 3002;
+const port = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({extended:false})); 
 app.use(bodyParser.json()); 
