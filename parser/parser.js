@@ -1,6 +1,7 @@
 // var csv = require('csv-parser');
 // var csv = require("fast-csv");
 var parse = require('csv-parse');
+var transform = require('stream-transform');
 var fs = require("fs");
 var path = require("path");
 var _ = require('lodash');
@@ -64,24 +65,23 @@ fs.readFile('input.csv', function (err, fileData) {
             columns.push(new Column(type, tags));
         }
 
-        console.log(columns);
-
-
+        // console.log(columns);
         // var found_user;
-        // var user_index;
-        var name;
-        var id;
-        var classes = [];
-        var addresses = [];
-        var invisible_input;
-        var invisible;
-        var see_all_input;
-        var see_all;
-        var data_list;
-        var tokenized_classes = [];
-        var tokenized_emails = [];
-        var phone_number;
-        var parsed_number;
+        var user_index,
+            name,
+            id,
+            classes = [],
+            addresses = [],
+            invisible_input,
+            invisible,
+            see_all_input,
+            see_all,
+            data_list,
+            tokenized_classes = [],
+            tokenized_emails = [],
+            phone_number,
+            parsed_number;
+
         for(i=0; i < data_rows.length ; i++) {
             // console.log(data_rows[i]);
             data_list = _.chunk(data_rows[i], 1);
@@ -91,7 +91,6 @@ fs.readFile('input.csv', function (err, fileData) {
             tokenized_emails.splice(0, tokenized_emails.length);
 
             for(j=0; j < data_rows[i].length ; j++) {
-
 
                 switch ( columns[j].type ) {
 
@@ -127,8 +126,10 @@ fs.readFile('input.csv', function (err, fileData) {
 
                         for(k=0; k < tokenized_classes.length; k++) {
                             // console.log("class to add: " + tokenized_classes[k]);
-                            if (tokenized_classes[k].toString() != "")
+                            if (tokenized_classes[k].toString() != "") {
                                 classes.push(tokenized_classes[k].toString().trim());
+
+                            }
 
                         }                 
  
@@ -147,13 +148,21 @@ fs.readFile('input.csv', function (err, fileData) {
 
                         if ( phoneUtil.isValidNumber(parsed_number) ) {
                             // console.log("parsed: " + phoneUtil.format(parsed_number, PNF.E164).replace("+", ""));
-                            addresses.push(new Address(columns[j].type, columns[j].tags, phoneUtil.format(parsed_number, PNF.E164).replace("+", "")));
+                            var index = addresses.findIndex( function (addr) {
+                                return addr.address == phone_number && addr.type == 'phone'
+                            });
+                            if (index != -1) {
+                                addresses[index].tags.push.apply(addresses[index].tags, columns[j].tags.spice());
+                            }
+                            else {
+                                addresses.push(new Address(columns[j].type, columns[j].tags.slice(), phoneUtil.format(parsed_number, PNF.E164).replace("+", "")));
+                            }
 
                         }
                         break;
                         
                     case 'email':
-                        tokenized_emails = _.chunk(data_list[j].toString().replace(' ', ',').split(","), 1);
+                        tokenized_emails = _.chunk(data_list[j].toString().replace('/', ',').split(","), 1);
                         tokenized_emails.map(function(tok_email) { return tok_email.toString().trim() });
                         // for(k=0; k < tokenized_emails.length; k++) {
                         //     console.log("trimmed:'" + tokenized_emails[k].toString() + "'");
@@ -162,8 +171,29 @@ fs.readFile('input.csv', function (err, fileData) {
                         for(k=0; k < tokenized_emails.length; k++) {
                             if (validator.isEmail(tokenized_emails[k].toString()) ) {
                                 // console.log("email to add: " + tokenized_emails[k].toString());
-                                addresses.push(new Address(columns[j].type, columns[j].tags, tokenized_emails[k].toString()));
-                                
+                                // console.log("column tags:" + columns[j].tags);
+
+                                // var test = addresses.findIndex( function (addr) {
+                                //     return addr.address == "johndoemae1@gmail.com";
+
+                                    
+                                // });
+                                // console.log("mae tags:" + addresses[test]);
+
+                                var index = addresses.findIndex( function (addr) {
+                                    return addr.address == tokenized_emails[k] && addr.type == 'email'
+                                });
+                                if (index != -1) {
+                                    // console.log("curr tags:" + addresses[index].tags + '\ntags:' + columns[j].tags.slice());
+                                    addresses[index].tags.push.apply(addresses[index].tags, columns[j].tags.slice());
+                                    // console.log("curr tags:" + addresses[index].tags);
+
+                                }
+                                else {
+                
+                                    addresses.push(new Address(columns[j].type, columns[j].tags.slice(), tokenized_emails[k].toString()));
+        
+                                }
                             }
                         }
                         // tokenized_emails.forEach(addresses.push(new Address(columns[j].type, columns[j].tags, ));
@@ -172,23 +202,77 @@ fs.readFile('input.csv', function (err, fileData) {
                 }
 
             }
+            // for(k=0; k < classes.length; k++) {
+            //     console.log("classes:'" + classes[k] + "'");
 
-            console.log("\nData:");
-            console.log("fullname:'" + name + "'");
-            console.log("id:'" + id + "'");
-            console.log("invisible:'" + invisible + "'");
-            console.log("see_all:'" + see_all + "'\n");
-            for(k=0; k < classes.length; k++) {
-                console.log("classes:'" + classes[k] + "'");
+            // }
+            // console.log("\n");
+            // console.log("\naddresses:");
+            // for(k=0; k < addresses.length; k++) {
+            //     console.log("\naddress:\ntype:'" + addresses[k].type  + "'" + "\ntags:" + addresses[k].tags + "\naddr:" + addresses[k].address );
 
+            // }
+            
+            // console.log("\n");
+            user_index = output.findIndex( function (user) {
+                return user.eid == id;
+            });
+            // console.log("'\nid:'" + id + "'");
+
+            if (user_index != -1) {
+                // console.log("User id:'" + output[user_index].eid + "'\nid:'" + id + "'\n");
+                // for(k=0; k < classes.length; k++) {
+                //     console.log("classes:'" + classes[k] + "'");
+    
+                // }
+                // console.log("\n");
+
+                // for(k=0; k < output[user_index].classes.length; k++) {
+                //     console.log("curr classes:'" + output[user_index].classes[k] + "'");
+    
+                // }
+                // console.log("\naddresses:");
+                // for(k=0; k < addresses.length; k++) {
+                //     console.log("\naddress:\ntype:'" + addresses[k].type  + "'" + "\ntags:" + addresses[k].tags + "\naddr:" + addresses[k].address );
+    
+                // }
+                
+                // console.log("\n");
+                // console.log("\ncurr addresses:");
+                // for(k=0; k <  output[user_index].addresses.length; k++) {
+                //     console.log("\naddress:\ntype:'" +  output[user_index].addresses[k].type  + "'" + "\ntags:" + output[user_index].addresses[k].tags + "\naddr:" +  output[user_index].addresses[k].address );
+    
+                // }
+                output[user_index].addresses.push.apply(output[user_index].addresses, addresses.slice());
+                output[user_index].classes.push.apply(output[user_index].classes, classes.slice());
+                output[user_index].invisible = output[user_index].invisible || invisible;
+                output[user_index].see_all = output[user_index].see_all ||see_all;
             }
-            console.log("\naddresses:");
-            for(k=0; k < addresses.length; k++) {
-                console.log("\naddress:\ntype:'" + addresses[k].type  + "'" + "\ntags:" + addresses[k].tags + "\naddr:" + addresses[k].address );
-
+            else {
+                output.push(new User(name, id, classes.slice(), addresses.slice(), invisible, see_all));
             }
-            console.log("\n");
+            // console.log("\nData:");
+            // console.log("fullname:'" + name + "'");
+            // console.log("id:'" + id + "'");
+            // console.log("invisible:'" + invisible + "'");
+            // console.log("see_all:'" + see_all + "'\n");
+            // for(k=0; k < classes.length; k++) {
+            //     console.log("classes:'" + classes[k] + "'");
+
+            // }
+            // console.log("\naddresses:");
+            // for(k=0; k < addresses.length; k++) {
+            //     console.log("\naddress:\ntype:'" + addresses[k].type  + "'" + "\ntags:" + addresses[k].tags + "\naddr:" + addresses[k].address );
+
+            // }
+            // console.log("\n");
         }
+        // var outputJSON = transform(output, function(data){
+        //     data.push(data.shift())
+        //   return data;
+        // });
+        var outputJSON = JSON.stringify(output, null, 2);
+        console.log(outputJSON);
+    });
 
-    })
 })
