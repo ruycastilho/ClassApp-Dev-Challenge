@@ -1,6 +1,7 @@
 {
   "name": "classapp-dev-challenge",
   "version": "1.0.0",
+  "main": "server.js",
   "scripts": {
     "client": "cd classapp-dev-challenge/client && npm install && npm build", 
     "server": "cd classapp-dev-challenge && node server.js",

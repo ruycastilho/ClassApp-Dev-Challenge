@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 app.get('/api/parser', (req, res) => {
   Parser.parseCSV();
-  res.send();
+  res.send("HEY");
 
 
 });
