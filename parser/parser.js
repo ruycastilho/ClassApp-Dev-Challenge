@@ -66,6 +66,7 @@ fs.readFile('input.csv', function (err, fileData) {
 
         console.log(columns);
 
+
         // var found_user;
         // var user_index;
         var name;
@@ -84,7 +85,13 @@ fs.readFile('input.csv', function (err, fileData) {
         for(i=0; i < data_rows.length ; i++) {
             // console.log(data_rows[i]);
             data_list = _.chunk(data_rows[i], 1);
+            classes.splice(0, classes.length);
+            addresses.splice(0, addresses.length);
+            tokenized_classes.splice(0, tokenized_classes.length);
+            tokenized_emails.splice(0, tokenized_emails.length);
+
             for(j=0; j < data_rows[i].length ; j++) {
+
 
                 switch ( columns[j].type ) {
 
@@ -104,7 +111,7 @@ fs.readFile('input.csv', function (err, fileData) {
 
                         }
                         break;
-                    case 'see all':
+                    case 'see_all':
                         see_all_input = data_list[j].toString();
                         if (see_all_input == "" || see_all_input == "0" || see_all_input == "no") {
                             see_all = false;
@@ -116,15 +123,19 @@ fs.readFile('input.csv', function (err, fileData) {
                         break;
                     case 'class':
                         tokenized_classes = _.chunk(data_list[j].toString().replace('/', ',').split(","), 1);
-                        tokenized_classes.map(function(tok_class) { return tok_class.toString().trim() });
+                        // tokenized_classes.map(function(tok_class) { return tok_class.toString().trim() });
 
-                        // for(k=0; k < tokenized_classes.length; k++) {
-                        //     console.log("class to add: " + tokenized_classes[k]);
-                        // }                        
+                        for(k=0; k < tokenized_classes.length; k++) {
+                            // console.log("class to add: " + tokenized_classes[k]);
+                            if (tokenized_classes[k].toString() != "")
+                                classes.push(tokenized_classes[k].toString().trim());
+
+                        }                 
+ 
                         break;
                     case 'phone':
                         phone_number = data_list[j].toString().trim();
-                        console.log("phone: " + phone_number);
+                        // console.log("phone: " + phone_number);
                         
                         try {
                             parsed_number = phoneUtil.parse(phone_number, 'BR');
@@ -135,30 +146,48 @@ fs.readFile('input.csv', function (err, fileData) {
                         }
 
                         if ( phoneUtil.isValidNumber(parsed_number) ) {
-                            console.log("parsed: " + phoneUtil.format(parsed_number, PNF.E164).replace("+", ""));
-                            // addresses.push(new Address(columns[j].type, columns[j].tags, phoneUtil.format(parsed_number, PNF.E164).replace("+", "")));
+                            // console.log("parsed: " + phoneUtil.format(parsed_number, PNF.E164).replace("+", ""));
+                            addresses.push(new Address(columns[j].type, columns[j].tags, phoneUtil.format(parsed_number, PNF.E164).replace("+", "")));
 
                         }
                         break;
                         
                     case 'email':
-                        tokenized_emails = data_list[j].toString().replace('/', ',').split(",");
+                        tokenized_emails = _.chunk(data_list[j].toString().replace(' ', ',').split(","), 1);
                         tokenized_emails.map(function(tok_email) { return tok_email.toString().trim() });
-
-                        tokenized_emails.filter(function (email) {
-                            return validator.isEmail(email);
-                        });
-                        console.log("Valid emails:" + tokenized_emails);
+                        // for(k=0; k < tokenized_emails.length; k++) {
+                        //     console.log("trimmed:'" + tokenized_emails[k].toString() + "'");
+                        // }
 
                         for(k=0; k < tokenized_emails.length; k++) {
-                            // console.log("email to add: " + tokenized_emails[k]);
-                            addresses.push(new Address(columns[j].type, columns[j].tags, tokenized_emails[k]));
+                            if (validator.isEmail(tokenized_emails[k].toString()) ) {
+                                // console.log("email to add: " + tokenized_emails[k].toString());
+                                addresses.push(new Address(columns[j].type, columns[j].tags, tokenized_emails[k].toString()));
+                                
+                            }
                         }
                         // tokenized_emails.forEach(addresses.push(new Address(columns[j].type, columns[j].tags, ));
                         break;
                     
                 }
+
             }
+
+            console.log("\nData:");
+            console.log("fullname:'" + name + "'");
+            console.log("id:'" + id + "'");
+            console.log("invisible:'" + invisible + "'");
+            console.log("see_all:'" + see_all + "'\n");
+            for(k=0; k < classes.length; k++) {
+                console.log("classes:'" + classes[k] + "'");
+
+            }
+            console.log("\naddresses:");
+            for(k=0; k < addresses.length; k++) {
+                console.log("\naddress:\ntype:'" + addresses[k].type  + "'" + "\ntags:" + addresses[k].tags + "\naddr:" + addresses[k].address );
+
+            }
+            console.log("\n");
         }
 
     })
