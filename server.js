@@ -42,20 +42,19 @@ function parsingCSV (callback) {
 }
 app.post('/upload', upload.single('file'), (req, res) => {
   
-  parsingCSV(function () {
-    res.set('Content-Disposition', 'attachment; filename=output.json')
-    res.download('./files/output.json');
-  })
+  // parsingCSV(function () {
+  //   res.set('Content-Disposition', 'attachment; filename=output.json')
 
+  //   res.download('./files/output.json');
+  // })
+  res.set('Content-Disposition', 'attachment; filename=output.json')
+    
+  res.download('input.csv');
 })
 
-app.get('/download', function(req, res){
-  res.set('Content-Disposition', 'attachment; filename=output.json')
-  res.download('./files/output.json');
-});
-
-// app.get('*', (req, res) => {
-//   res.sendFile(path.join(__dirname+'/client/build/index.html'));
+// app.get('/download', function(req, res){
+//   res.set('Content-Disposition', 'attachment; filename=output.json')
+//   res.download('./files/output.json');
 // });
 
 
