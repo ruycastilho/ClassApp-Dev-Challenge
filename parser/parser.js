@@ -79,7 +79,6 @@ fs.readFile('input.csv', function (err, fileData) {
             header.push(new Column(type, tags.slice()));
         }
 
-        console.log(header);
         // User information parsing
 
         // Auxiliar variables for parsing
@@ -261,7 +260,12 @@ fs.readFile('input.csv', function (err, fileData) {
 
         // Finally, transforms array into a JSON and outputs it
         var outputJSON = JSON.stringify(output, null, 2);
-        console.log(outputJSON);
+        // console.log(outputJSON);
+        fs.writeFile('output.json', outputJSON, 'utf8', function(err){
+            if(err) {
+               console.log("Error ocurred during file creation/output.");
+            }
+        });
     });
 
 })
