@@ -23,3 +23,8 @@
 //  CSS:
 //   https://www.w3schools.com/css/css3_shadows.asp
 
+// Validation:
+//   http://www.regular-expressions.info/email.html
+//   https://www.npmjs.com/package/google-libphonenumber
+
+// 
