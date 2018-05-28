@@ -271,7 +271,7 @@ class App extends Component {
  
           </OutputDiv>
           <FileDiv>
-            <Form>
+            <Form action="/upload" enctype="multipart/form-data" method="POST" >
                 <Input type="file" name="csv"></Input>
                 <Input type="submit" name="submit" value="Upload .CSV File"></Input>
               </Form>

@@ -1,4 +1,6 @@
 const express = require('express');
+const multer = require('multer'); // file storing middleware
+const bodyParser = require('body-parser'); //cleans our req.body
 
 const app = express();
 const port = process.env.PORT || 3002;
