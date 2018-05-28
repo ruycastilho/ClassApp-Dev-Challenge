@@ -1,19 +1,47 @@
+// ClassApp DevChallenge (Server)
+// Available at: https://classapp-dev-challenge.herokuapp.com/
+// Challenge: https://gist.github.com/lucas-brito/84a77f08115ae4b9b034c010ff2a2ab4
+// Author: Ruy Castilho Barrichelo, github.com/ruycastilho
+
+// Parser: Available at 'parser.js'
+var Parser = require('./parser.js');
+// Filestream : Working with file I/O
+var fs = require("fs");
+// Express: Server
 const express = require('express');
-const multer = require('multer'); // file storing middleware
-const bodyParser = require('body-parser'); //cleans our req.body
+// Multer : File storing
+const multer = require('multer');
+// Body-Parser : Cleans req.body
+const bodyParser = require('body-parser');
+
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 3002;
+
 app.use(bodyParser.urlencoded({extended:false})); 
 app.use(bodyParser.json()); 
 
-// app.get('/api/hello', (req, res) => {
-//   res.send({ express: 'Hello From Express' });
-// });
+const storage = multer.diskStorage({
+  destination: './files',
+  filename(req, file, cb) {
+    cb(null, `${new Date()}-${file.originalname}`);
+  },
+});
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static('client/build'));
-}
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+app.get('/api/parser', (req, res) => {
+  Parser.parseCSV();
+  res.send();
+
+
+});
+
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
+
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
