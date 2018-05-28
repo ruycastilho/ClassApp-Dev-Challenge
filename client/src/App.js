@@ -94,8 +94,6 @@ const LogoDiv = styled.div`
     float:right;
 `;
 
-
-
 const Logo = styled.img`
     height: 55%;
     margin: 6% auto;
@@ -195,17 +193,11 @@ const DescriptionRightText = DescriptionText.extend`
 
 class App extends Component {
 
-//   componentDidMount() {
-//     this.callApi()
-//       .then(res => this.setState({ response: res.express }))
-//       .catch(err => console.log(err));
-//   }
-
   render() {
     return (
       <PageDiv className="ClassAppDevChallengePage">
 
-        <HeaderDiv className="Header">
+        <HeaderDiv>
           <TitleDiv>
             <HeaderText>ClassApp Dev Challenge</HeaderText>
           </TitleDiv>
@@ -227,7 +219,7 @@ class App extends Component {
             <DescriptionRightText>An output.json file, that contains the parsed and organized content from input.csv. <br/>The JSON order is not important, but content is.</DescriptionRightText>         
  
           </OutputDiv>
-          {/* <FileUpload /> */}
+          <FileUpload />
         </MainDiv>
 
         <FooterDiv>
