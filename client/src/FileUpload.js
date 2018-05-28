@@ -43,7 +43,8 @@ class FileUpload extends Component {
         event.preventDefault();
         const data = new FormData();
         data.append('file', this.uploadInput.files[0]);
-    
+        alert("!");
+
         axios.post('https://classapp-dev-challenge.herokuapp.com/upload', data)
           .then(function (response) {
             alert("!");
