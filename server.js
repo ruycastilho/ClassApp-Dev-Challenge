@@ -41,6 +41,7 @@ app.post('/upload', upload.single('file'), (req, res) => {
 })
 
 app.get('/download', function(req, res){
+  res.set('Content-Disposition', 'attachment; filename=output.json')
   res.download('./files/output.json');
 });
 
