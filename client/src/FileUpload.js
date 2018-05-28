@@ -41,7 +41,7 @@ class FileUpload extends Component {
    
     handleUpload(event) {
         event.preventDefault();
-    
+        alert("AQUI");
         const data = new FormData();
         data.append('file', this.uploadInput.files[0]);
     
