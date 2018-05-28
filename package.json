@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "client": "cd classapp-dev-challenge/client && npm install && npm run build", 
-    "server": "cd classapp-dev-challenge && node server.js",
-    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
+    "start": "node server.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "dependencies": {
     "axios": "^0.18.0",

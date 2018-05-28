@@ -6,7 +6,7 @@
 // Modules Used:
 
 // Parser: Available at 'parser.js'
-var Parser = require('./parser.js');
+var Parser = require('./parser/parser.js');
 // Filestream : Working with file I/O
 var fs = require("fs");
 // Express: Server
