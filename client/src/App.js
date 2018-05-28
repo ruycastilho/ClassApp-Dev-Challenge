@@ -4,7 +4,11 @@ import reactlogo from './logo.svg';
 import linkedin from './linkedin.png';
 import github from './github.png';
 import nodejs from './nodejslogo.png';
-import FileUpload from './FileUpload';
+
+// Modules Used:
+
+// Axios : API calls
+const axios = require('axios');
 
 const PageDiv = styled.div`
     background-color: transparent;
@@ -94,6 +98,20 @@ const LogoDiv = styled.div`
     float:right;
 `;
 
+const FileDiv = styled.div`
+    background-color: transparent;
+    padding:0;
+    height:100%;
+    overflow:hidden;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    margin:auto;
+    position: absolute;
+    bottom: 0;
+`;
+
 const Logo = styled.img`
     height: 55%;
     margin: 6% auto;
@@ -154,7 +172,7 @@ const FunctionText = styled.p`
     padding-top: 4%;
     margin: auto;
     width: 100%;
-`;
+  `;
 
 const FunctionLeftText = FunctionText.extend`
     float: left;
@@ -191,13 +209,63 @@ const DescriptionRightText = DescriptionText.extend`
 
 `;
 
+const Input = styled.input`
+  padding: 0.5em;
+  margin: 0.5em;
+  color: #235BD6;
+  background: transparent;
+  border: solid 1px;
+`;
+
+// const SubmitInput = DescriptionText.extend`
+//     float: right;
+//     text-align: right;
+
+// `;
+
+const Form = styled.form`
+    margin: 0 auto;
+`;
+
+
 class App extends Component {
+
+  componentDidMount() {
+    this.callApi()
+      .then(res => this.setState({ response: res.express }))
+      .catch(err => console.log(err));
+  }
+
+//   callApi = async () => {
+//     const response = await fetch('/api/parser');
+//     const body = await response.json();
+
+//     if (response.status !== 200) throw Error(body.message);
+
+//     return body;
+//   };
+
+  handleUpload(ev) {
+    ev.preventDefault();
+
+    const data = new FormData();
+    data.append('file', this.uploadInput.files[0]);
+    data.append('filename', this.fileName.value);
+
+    axios.post('http://localhost:8000/upload', data)
+      .then(function (response) {
+    this.setState({ imageURL: `http://localhost:8000/${body.file}`, uploadStatus: true });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+}
 
   render() {
     return (
       <PageDiv className="ClassAppDevChallengePage">
 
-        <HeaderDiv>
+        <HeaderDiv className="Header">
           <TitleDiv>
             <HeaderText>ClassApp Dev Challenge</HeaderText>
           </TitleDiv>
@@ -219,7 +287,12 @@ class App extends Component {
             <DescriptionRightText>An output.json file, that contains the parsed and organized content from input.csv. <br/>The JSON order is not important, but content is.</DescriptionRightText>         
  
           </OutputDiv>
-          <FileUpload />
+          <FileDiv>
+            <Form enctype="multipart/form-data" method="POST" >
+                <Input type="file" name="csv"></Input>
+                <Input type="submit" name="submit" value="Upload .CSV File"></Input>
+              </Form>
+          </FileDiv>
         </MainDiv>
 
         <FooterDiv>
@@ -228,6 +301,7 @@ class App extends Component {
           <Link href="https://www.linkedin.com/in/ruycastilho"><LogoLinkRight alt="linkedinlogo" src={linkedin}/></Link>          
 
         </FooterDiv>
+        {/* <p className="App-intro">{this.state.response}</p> */}
       </PageDiv>
     );
   }

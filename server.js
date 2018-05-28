@@ -33,14 +33,9 @@ const storage = multer.diskStorage({
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// app.get('/api/parser', (req, res) => {
-//   Parser.parseCSV();
-//   res.send("HEY");
+var upload = multer({ storage: storage });
 
-
-// });
-
-app.post('/upload', multer.single('file'), (req, res) => {
+app.post('/upload', upload.single('file'), (req, res) => {
   // console.log(req);
 
   Parser.parseCSV();
