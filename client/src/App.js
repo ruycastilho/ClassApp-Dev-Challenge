@@ -227,7 +227,7 @@ class App extends Component {
             <DescriptionRightText>An output.json file, that contains the parsed and organized content from input.csv. <br/>The JSON order is not important, but content is.</DescriptionRightText>         
  
           </OutputDiv>
-          <FileUpload />
+          {/* <FileUpload /> */}
         </MainDiv>
 
         <FooterDiv>
