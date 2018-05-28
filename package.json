@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "client": "cd classapp-dev-challenge/client && npm install && npm start", 
+    "client": "cd classapp-dev-challenge/client && npm install && npm run build", 
     "server": "cd classapp-dev-challenge && node server.js",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
