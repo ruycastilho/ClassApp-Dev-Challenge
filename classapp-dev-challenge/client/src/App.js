@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-
 import reactlogo from './logo.svg';
 import linkedin from './linkedin.png';
 import github from './github.png';
 import nodejs from './nodejslogo.png';
+
+// Modules Used:
+
+// Axios : API calls
+const axios = require('axios');
 
 const PageDiv = styled.div`
     background-color: transparent;
@@ -236,7 +240,7 @@ class App extends Component {
   }
 
   callApi = async () => {
-    const response = await fetch('/api/hello');
+    const response = await fetch('/api/parser');
     const body = await response.json();
 
     if (response.status !== 200) throw Error(body.message);
@@ -271,7 +275,7 @@ class App extends Component {
  
           </OutputDiv>
           <FileDiv>
-            <Form action="/upload" enctype="multipart/form-data" method="POST" >
+            <Form enctype="multipart/form-data" method="POST" >
                 <Input type="file" name="csv"></Input>
                 <Input type="submit" name="submit" value="Upload .CSV File"></Input>
               </Form>

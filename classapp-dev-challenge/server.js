@@ -13,6 +13,8 @@ const express = require('express');
 const multer = require('multer');
 // Body-Parser : Cleans req.body
 const bodyParser = require('body-parser');
+// Axios : API calls
+const axios = require('axios');
 
 const path = require('path');
 
