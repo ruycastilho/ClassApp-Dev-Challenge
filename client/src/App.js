@@ -6,11 +6,6 @@ import github from './github.png';
 import nodejs from './nodejslogo.png';
 import FileUpload from './FileUpload';
 
-// Modules Used:
-
-// Axios : API calls
-const axios = require('axios');
-
 const PageDiv = styled.div`
     background-color: transparent;
     overflow:hidden;
