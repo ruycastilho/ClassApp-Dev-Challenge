@@ -46,10 +46,10 @@ class FileUpload extends Component {
     
         axios.post('https://classapp-dev-challenge.herokuapp.com/upload', data)
           .then(function (response) {
-            axios.get('https://classapp-dev-challenge.herokuapp.com/download')
-            .catch(function (error) {
-              console.log(error);
-            });
+            // axios.get('https://classapp-dev-challenge.herokuapp.com/download')
+            // .catch(function (error) {
+            //   console.log(error);
+            // });
 
           })
           .catch(function (error) {

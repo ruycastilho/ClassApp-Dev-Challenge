@@ -35,8 +35,17 @@ app.use(express.static(path.join(__dirname, 'client/build')));
 
 var upload = multer({ storage: storage });
 
-app.post('/upload', upload.single('file'), (req, res) => {
+function parsingCSV (callback) {
   Parser.parseCSV();
+
+
+}
+app.post('/upload', upload.single('file'), (req, res) => {
+  
+  parsingCSV(function () {
+    res.set('Content-Disposition', 'attachment; filename=output.json')
+    res.download('./files/output.json');
+  })
 
 })
 

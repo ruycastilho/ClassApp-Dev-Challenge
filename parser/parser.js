@@ -51,7 +51,7 @@ var header = [];               // Array of Column objects that stores .csv heade
 
 // .csv Input and Initial parsing
 exports.parseCSV = function() {
-    fs.readFile('input.csv', function (err, fileData) {
+    fs.readFile('../files/input.csv', function (err, fileData) {
         
         // Reads data from 'input.csv' and stores it in the array named 'rows'
         parse(fileData, function(err, rows) {
@@ -262,7 +262,7 @@ exports.parseCSV = function() {
             // Finally, transforms array into a JSON and outputs it
             var outputJSON = JSON.stringify(output, null, 2);
             // console.log(outputJSON);
-            fs.writeFile('output.json', outputJSON, 'utf8', function(err){
+            fs.writeFile('../files/output.json', outputJSON, 'utf8', function(err){
                 if(err) {
                 console.log("Error ocurred during file creation/output.");
                 }
