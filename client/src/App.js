@@ -195,11 +195,11 @@ const DescriptionRightText = DescriptionText.extend`
 
 class App extends Component {
 
-  componentDidMount() {
-    this.callApi()
-      .then(res => this.setState({ response: res.express }))
-      .catch(err => console.log(err));
-  }
+//   componentDidMount() {
+//     this.callApi()
+//       .then(res => this.setState({ response: res.express }))
+//       .catch(err => console.log(err));
+//   }
 
   render() {
     return (
