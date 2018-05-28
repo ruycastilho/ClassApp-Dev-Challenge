@@ -40,7 +40,7 @@ class FileUpload extends Component {
           }
         this.handleUpload = this.handleUpload.bind(this);
     }
-   
+
     // Handling POST
     handleUpload(event) {
         event.preventDefault();
