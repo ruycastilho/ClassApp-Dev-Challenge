@@ -6,6 +6,7 @@ import styled from 'styled-components';
 // Axios : API calls
 const axios = require('axios');
 
+// Styling
 const FileDiv = styled.div`
     background-color: transparent;
     padding:0;
@@ -30,6 +31,7 @@ const Form = styled.form`
     margin: 0 auto;
 `;
 
+// File-uploading component
 class FileUpload extends Component {
     constructor(props) {
         super(props);
@@ -39,30 +41,23 @@ class FileUpload extends Component {
         this.handleUpload = this.handleUpload.bind(this);
     }
    
+    // Handling POST
     handleUpload(event) {
         event.preventDefault();
         const data = new FormData();
         data.append('file', this.uploadInput.files[0]);
-        alert("!");
-
+    
         axios.post('https://classapp-dev-challenge.herokuapp.com/upload', data)
-          .then(function (response) {
-            alert("!");
-            // axios.get('https://classapp-dev-challenge.herokuapp.com/download')
-            // .catch(function (error) {
-            //   console.log(error);
-            // });
-
-          })
           .catch(function (error) {
             console.log(error);
           });
     }
 
+  // HTML Form
    render() {
      return(
         <FileDiv>
-            <Form onSubmit={alert("!")} >
+            <Form onSubmit={this.handleUpload} >
                 <Input type="file" name="csv" ref={(ref) => { this.uploadInput = ref; }}></Input>
                 <Input type="submit" name="submit" value="Upload .CSV File"></Input>
             </Form>

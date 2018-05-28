@@ -6,6 +6,8 @@ import github from './github.png';
 import nodejs from './nodejslogo.png';
 import FileUpload from './FileUpload';
 
+
+// Styling
 const PageDiv = styled.div`
     background-color: transparent;
     overflow:hidden;
@@ -191,12 +193,15 @@ const DescriptionRightText = DescriptionText.extend`
 
 `;
 
+
+// Main component
 class App extends Component {
 
   render() {
     return (
       <PageDiv className="ClassAppDevChallengePage">
-
+        
+        {/* Header */}
         <HeaderDiv>
           <TitleDiv>
             <HeaderText>ClassApp Dev Challenge</HeaderText>
@@ -207,6 +212,7 @@ class App extends Component {
           </LogoDiv>
         </HeaderDiv>
 
+        {/* Main page content */}
         <MainDiv>
           <InputDiv> 
             <FunctionLeftText>Input</FunctionLeftText>
@@ -219,9 +225,11 @@ class App extends Component {
             <DescriptionRightText>An output.json file, that contains the parsed and organized content from input.csv. <br/>The JSON order is not important, but content is.</DescriptionRightText>         
  
           </OutputDiv>
+          {/* File upload form */}
           <FileUpload />
         </MainDiv>
 
+        {/* Footer */}
         <FooterDiv>
           <Link href="https://www.github.com/ruycastilho"><LogoLinkLeft alt="githublogo" src={github}/></Link>                    
           <FooterText>Ruy Castilho Barrichelo</FooterText>

@@ -17,46 +17,41 @@ const multer = require('multer');
 const bodyParser = require('body-parser');
 
 const path = require('path');
-
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({extended:false})); 
 app.use(bodyParser.json()); 
 
+// Storage management
 const storage = multer.diskStorage({
   destination: './files',
   filename(req, file, cb) {
     cb(null, `input.csv`);
   },
 });
+var upload = multer({ storage: storage });
+
 
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-var upload = multer({ storage: storage });
 
+// Aux function 
 function parsingCSV (callback) {
   Parser.parseCSV();
-
-
+  callback();
 }
+
+// POST method
 app.post('/upload', upload.single('file'), (req, res) => {
   
-  // parsingCSV(function () {
-  //   res.set('Content-Disposition', 'attachment; filename=output.json')
+  // Calling parser
+  parsingCSV(function () {
+    res.set('Content-Disposition', 'attachment; filename=output.json')
+    res.download('./files/output.json');
+  })
 
-  //   res.download('./files/output.json');
-  // })
-  res.set('Content-Disposition', 'attachment; filename=output.json')
-    
-  res.download('input.csv');
 })
-
-// app.get('/download', function(req, res){
-//   res.set('Content-Disposition', 'attachment; filename=output.json')
-//   res.download('./files/output.json');
-// });
-
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
