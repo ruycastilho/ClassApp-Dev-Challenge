@@ -45,9 +45,13 @@ class FileUpload extends Component {
         const data = new FormData();
         data.append('file', this.uploadInput.files[0]);
     
-        axios.post('http://localhost:5000/upload', data)
+        axios.post('https://classapp-dev-challenge.herokuapp.com/upload', data)
           .then(function (response) {
-        this.setState({ uploadStatus: true });
+            axios.get('https://classapp-dev-challenge.herokuapp.com/download')
+            .catch(function (error) {
+              console.log(error);
+            });
+
           })
           .catch(function (error) {
             console.log(error);
