@@ -2,8 +2,8 @@
   "name": "classapp-dev-challenge",
   "version": "1.0.0",
   "scripts": {
-    "client": "cd client && npm build", 
-    "server": "node server.js",
+    "client": "cd classapp-dev-challenge/client && cd client && npm build", 
+    "server": "cd classapp-dev-challenge && node server.js",
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\""
   },
   "dependencies": {
